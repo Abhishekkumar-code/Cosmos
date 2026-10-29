@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+@theme {
+  --color-dev-bg: #06080F;
+  --color-dev-surface: #0D111C;
+  --color-dev-surface-hover: #131A2B;
+  --color-dev-card: rgba(13, 17, 28, 0.75);
+  --color-dev-border: rgba(255, 255, 255, 0.08);
+  --color-dev-border-focus: #6366F1;
+  --color-dev-primary: #6366F1;
+  --color-dev-primary-hover: #4F46E5;
+  --color-dev-accent: #06B6D4;
+  --color-dev-neon-purple: #A855F7;
+  --color-dev-cyan: #06B6D4;
+  --color-dev-emerald: #10B981;
+  --color-dev-rose: #F43F5E;
+  --color-dev-text-muted: #94A3B8;
+  --color-dev-text-base: #E2E8F0;
+  --color-dev-text-bright: #FFFFFF;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  background-color: #06080F;
+  color: #E2E8F0;
+  overflow-x: hidden;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.glass-panel {
+  background: rgba(13, 17, 28, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-panel-glow {
+  background: rgba(13, 17, 28, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  box-shadow: 0 0 40px -10px rgba(99, 102, 241, 0.2);
+}
+
+.cyber-grid {
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
