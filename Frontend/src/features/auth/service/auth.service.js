@@ -14,6 +14,8 @@ export async function register({ email, username, password, isAdmin }) {
     })
 
     return response.data
+
+
 }
 
 export async function login({ email, password }) {
