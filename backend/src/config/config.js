@@ -5,7 +5,6 @@ export const config = {
     RESEND_API_KEY: process.env.RESEND_API_KEY,
 
     GEMINI_API_KEY: process.env.GEMINI_API_KEY,
-    MISTRAL_API_KEY: process.env.MISTRAL_API_KEY,
     COHERE_API_KEY: process.env.COHERE_API_KEY,
 
     GROQ_API_KEY: process.env.GROQ_API_KEY,
@@ -27,6 +26,5 @@ if (!process.env.MONGO_URI) throw new Error("MONGO_URI is missing");
 if (!process.env.IMAGEKIT_API_KEY) throw new Error("IMAGEKIT_API_KEY is missing");
 if (!process.env.TAVILY_API_KEY) throw new Error("TAVILY_API_KEY is missing");
 if (!process.env.GEMINI_API_KEY) throw new Error("GEMINI_API_KEY is missing");
-if (!process.env.MISTRAL_API_KEY) throw new Error("MISTRAL_API_KEY is missing");
 if (!process.env.COHERE_API_KEY) throw new Error("COHERE_API_KEY is missing");
 if (!process.env.GROQ_API_KEY) throw new Error("GROQ_API_KEY is missing"); 
