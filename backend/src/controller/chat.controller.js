@@ -41,7 +41,7 @@ export async function sendmessage(req, res) {
             role: "user"
         })
 
-        const messages = await messagemodel.find({ chat: chatId || chat._id })
+        const messages = await messagemodel.find({ chat: chatId || chat._id }).sort({ createdAt: 1 });
         console.log("Calling generateresponse...")
         const result = await generateresponse(messages, chat._id || chatId);
         console.log("Got result:", result)
@@ -90,7 +90,8 @@ export async function getmessages(req, res) {
     }
     const messages = await messagemodel.find({
         chat: chatId
-    })
+    }).sort({ createdAt: 1 });
+
     res.status(200).json({
         message: "Message recieved succefully",
         messages

@@ -13,5 +13,8 @@ export async function chunkText(text, chunkSize = 800, chunkOverlap = 100) {
     chunkSize,
     chunkOverlap,
   });
-  return splitter.splitText(text);
+  const chunks = await splitter.splitText(text);
+  return chunks
+    .map((c) => c.trim())
+    .filter((c) => c.length > 15 && !/^--\s*\d+\s*of\s*\d+\s*--$/i.test(c));
 }

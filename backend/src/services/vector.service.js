@@ -1,3 +1,5 @@
+import dns from "dns";
+dns.setDefaultResultOrder("ipv4first");
 import { CloudClient } from "chromadb";
 import { GoogleGeminiEmbeddingFunction } from "@chroma-core/google-gemini";
 import { config } from "../config/config.js";
@@ -5,7 +7,7 @@ import { config } from "../config/config.js";
 const client = new CloudClient({
   apiKey: config.CHROMA_KEY,
   tenant: config.CHROMA_TENANT,
-  database:config.CHROMA_DATABASE,
+  database: config.CHROMA_DATABASE,
 });
 
 const embedder = new GoogleGeminiEmbeddingFunction({
@@ -37,18 +39,37 @@ export async function addChunksToVectorStore(chatId, chunks, sourceName) {
   return { added: chunks.length };
 }
 
-export async function queryVectorStore(chatId, query, k = 4) {
+export async function queryVectorStore(chatId, query, k = 8) {
   const collection = await getOrCreateCollection(chatId);
+  const count = await collection.count();
+  if (count === 0) return [];
 
+  if (count <= 15) {
+    const all = await collection.get();
+    const docs = all.documents || [];
+    const metas = all.metadatas || [];
+    return docs
+      .map((text, i) => ({
+        text,
+        source: metas[i]?.source,
+        chunkIndex: metas[i]?.chunkIndex ?? i,
+      }))
+      .sort((a, b) => a.chunkIndex - b.chunkIndex)
+      .filter((d) => d.text && d.text.trim().length > 0);
+  }
+
+  const nResults = Math.min(count, Math.max(k, 8));
   const results = await collection.query({
     queryTexts: [query],
-    nResults: k,
+    nResults,
   });
 
   const docs = results.documents?.[0] || [];
   const metas = results.metadatas?.[0] || [];
 
-  return docs.map((text, i) => ({ text, source: metas[i]?.source }));
+  return docs
+    .map((text, i) => ({ text, source: metas[i]?.source }))
+    .filter((d) => d.text && d.text.trim().length > 0);
 }
 
 export async function deleteChatCollection(chatId) {
