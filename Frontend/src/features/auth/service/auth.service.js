@@ -1,9 +1,13 @@
 import axios from "axios";
 
 const authapiinstace = axios.create({
-    baseURL: "http://localhost:3000/api/auth",
+    baseURL: "https://cosmos-qlbq.onrender.com/api/auth",
     withCredentials: true
 });
+// const authapiinstace = axios.create({
+//     baseURL: "http://localhost:3000/api/auth",
+//     withCredentials: true
+// });
 
 authapiinstace.interceptors.request.use((config) => {
     const token = localStorage.getItem("token");

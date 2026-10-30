@@ -44,10 +44,14 @@ const __dirname = path.dirname(__filename);
 
 connecttodb();
 
+const allowedOrigins = [
+    "http://localhost:5173",
+    "https://cosmos-qlbq.onrender.com"
+];
 app.use(cors({
-    origin: (origin, callback) => callback(null, true),
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    credentials: true
+    origin: allowedOrigins,
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
 }));
 
 app.use(express.json());

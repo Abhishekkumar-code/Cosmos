@@ -3,9 +3,12 @@ import { io } from "socket.io-client";
 export const initializedsocketconnection = () => {
     console.log("Initializing socket connection...");
 
-    const socket = io("http://localhost:3000", {
+    const socket = io("https://cosmos-qlbq.onrender.com", {
         withCredentials: true,
     });
+    // const socket = io("http://localhost:3000", {
+    //     withCredentials: true,
+    // });
 
     socket.on("connect", () => {
         console.log("Connected to Socket.IO:", socket.id);

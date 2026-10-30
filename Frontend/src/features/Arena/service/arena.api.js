@@ -1,7 +1,11 @@
 import axios from "axios";
 
+// const arenaApi = axios.create({
+//     baseURL: "http://localhost:3000",
+//     withCredentials: true,
+// });
 const arenaApi = axios.create({
-    baseURL: "http://localhost:3000",
+    baseURL: "https://cosmos-qlbq.onrender.com",
     withCredentials: true,
 });
 
