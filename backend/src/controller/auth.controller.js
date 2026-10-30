@@ -1,4 +1,6 @@
 import userModel from "../model/user.model.js"
+import chatModel from "../model/chat.model.js"
+import messageModel from "../model/message.model.js"
 import jwt from "jsonwebtoken"
 import { sendEmail } from "../services/email.service.js"
 
@@ -196,5 +198,113 @@ export async function getme(req, res) {
             success: false,
             err: err.message
         })
+    }
+}
+
+export async function getalldevelopers(req, res) {
+    try {
+        const developers = await userModel.find({
+            role: { $in: ["Developer", "developer"] }
+        }).select("-password").sort({ createdAt: -1 });
+
+        const developersWithStats = await Promise.all(
+            developers.map(async (dev) => {
+                const userChats = await chatModel.find({ user: dev._id });
+                const chatIds = userChats.map(c => c._id);
+                const messageCount = await messageModel.countDocuments({ chat: { $in: chatIds } });
+                const recentMessage = await messageModel.findOne({ chat: { $in: chatIds }, role: "user" })
+                    .sort({ createdAt: -1 })
+                    .select("content createdAt");
+
+                return {
+                    ...dev.toObject(),
+                    chatsCount: userChats.length,
+                    messagesCount: messageCount,
+                    lastMessage: recentMessage?.content || null,
+                    lastMessageTime: recentMessage?.createdAt || null
+                };
+            })
+        );
+
+        return res.status(200).json({
+            success: true,
+            developers: developersWithStats
+        });
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            message: "Failed to fetch developers",
+            err: err.message
+        });
+    }
+}
+
+export async function getdevelopermessages(req, res) {
+    try {
+        const { id } = req.params;
+        const developer = await userModel.findById(id).select("-password");
+        if (!developer) {
+            return res.status(404).json({
+                success: false,
+                message: "Developer not found"
+            });
+        }
+
+        const userChats = await chatModel.find({ user: id }).sort({ updatedAt: -1 });
+        const chatIds = userChats.map(c => c._id);
+        const messages = await messageModel.find({ chat: { $in: chatIds } })
+            .populate("chat", "title")
+            .sort({ createdAt: -1 });
+
+        return res.status(200).json({
+            success: true,
+            developer,
+            chats: userChats,
+            messages
+        });
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            message: "Failed to fetch messages",
+            err: err.message
+        });
+    }
+}
+
+export async function deletedeveloper(req, res) {
+    try {
+        const { id } = req.params;
+        const developer = await userModel.findById(id);
+        if (!developer) {
+            return res.status(404).json({
+                success: false,
+                message: "Developer not found"
+            });
+        }
+
+        if (developer.role?.toLowerCase() === "admin") {
+            return res.status(400).json({
+                success: false,
+                message: "Cannot delete an administrator"
+            });
+        }
+
+        const userChats = await chatModel.find({ user: id });
+        const chatIds = userChats.map(c => c._id);
+        await messageModel.deleteMany({ chat: { $in: chatIds } });
+        await chatModel.deleteMany({ user: id });
+        await userModel.findByIdAndDelete(id);
+
+        return res.status(200).json({
+            success: true,
+            message: "Developer and associated data deleted successfully",
+            deletedId: id
+        });
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            message: "Failed to delete developer",
+            err: err.message
+        });
     }
 }

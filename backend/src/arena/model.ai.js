@@ -5,7 +5,7 @@ import { config } from "../config/config.js";
 
 export const groqModel = new ChatGroq({
   apiKey: config.GROQ_API_KEY,
-  model: "llama-3.1-70b-versatile",
+  model: "qwen/qwen3.6-27b",
   temperature: 0.7,
   maxRetries: 1,
 });

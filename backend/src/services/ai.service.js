@@ -16,7 +16,7 @@
 //     temperature: 0,
 //     maxTokens: undefined,
 //     maxRetries: 2,
-   
+
 // })
 // const geminimodel = new ChatGoogleGenerativeAI({
 //   apiKey:config.GEMINI_API_KEY,
@@ -195,13 +195,13 @@ const groqmodel = new ChatGroq({
 });
 
 const openaimodel = new ChatOpenAI({
-  apiKey:config.OPENAI_API_KEY,
+  apiKey: config.OPENAI_API_KEY,
   model: "gpt-4o-mini",
   temperature: 0,
   maxTokens: undefined,
   timeout: undefined,
   maxRetries: 2,
- 
+
 });
 const geminimodel = new ChatGoogleGenerativeAI({
   apiKey: config.GEMINI_API_KEY,
@@ -399,7 +399,7 @@ function getAgentForChat(chatId) {
   console.log("AGENT TOOLS:", tools.map((t) => t.name));
 
   const agent = createAgent({
-    model: openaimodel,
+    model: groqmodel,
     tools,
     systemPrompt: SYSTEM_PROMPT,
   });
