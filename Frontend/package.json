@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.13.0",
+    "@splinetool/react-spline": "^4.1.0",
+    "@splinetool/runtime": "^2.0.122",
     "@tailwindcss/vite": "^4.3.3",
     "@zegocloud/zego-uikit-prebuilt": "^2.18.5",
     "axios": "^1.21.0",
