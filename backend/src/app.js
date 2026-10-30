@@ -1,9 +1,11 @@
 import express from "express"
 import cors from "cors"
-import cookieParser from "cookie-parser"
+
 import connecttodb from "./config/database.js"
 import authrouter from "./routes/auth.routes.js"
-
+import path from "path"
+import cookieParser from "cookie-parser"
+import chatrouter from "../src/routes/chat.routes.js"
 const app = express()
 connecttodb()
 
@@ -19,5 +21,5 @@ app.use(express.json())
 app.use(cookieParser())
 
 app.use("/api/auth", authrouter)
-
+app.use("/api/chat", chatrouter)
 export default app;
