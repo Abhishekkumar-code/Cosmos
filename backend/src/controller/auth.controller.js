@@ -48,7 +48,7 @@ export async function registercontroller(req, res) {
             html: `<p>${user.username}</p>
             <p>Thank you for registering at <strong>Cosmos</strong> as <strong>${user.role}</strong>. We are excited to have you on board!</p>
             <p>Please click on the link below to verify your email address:</p>
-            <a href="http://localhost:3000/api/auth/verify?token=${emailverificationtoken}">Verify</a>
+            <a href="https://cosmos-qlbq.onrender.com/api/auth/verify?token=${emailverificationtoken}">Verify</a>
             <p>Best regards,<br>Cosmos Team</p>`
         })
 
