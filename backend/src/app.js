@@ -45,8 +45,8 @@ const __dirname = path.dirname(__filename);
 connecttodb();
 
 app.use(cors({
-    origin: "http://localhost:5174",
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    origin: (origin, callback) => callback(null, true),
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true
 }));
 

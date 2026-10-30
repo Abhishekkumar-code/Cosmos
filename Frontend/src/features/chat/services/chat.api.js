@@ -1,8 +1,16 @@
 import axios from "axios";
 
 const api = axios.create({
- baseURL:"http://localhost:3000",
+  baseURL: "http://localhost:3000",
   withCredentials: true,
+});
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 export const sendmessage = async ({ message, chatId, image }) => {
@@ -26,23 +34,20 @@ export const sendmessage = async ({ message, chatId, image }) => {
   return response.data;
 };
 
+export const getchats = async () => {
+  const response = await api.get("/api/chat/getchat");
+  return response.data;
+};
 
-export const getchats = async ()=>{
-    const response = await api.get("/api/chat/getchat")
+export const getmessages = async (chatId) => {
+  const response = await api.get(`/api/chat/${chatId}/getmessages`);
+  return response.data;
+};
 
-    return response.data
-
-}
-
-export const getmessages = async (chatId)=>{
-    const response = await api.get(`/api/chat/${chatId}/getmessages`)
-    return response.data
-}
-
-export const deletechat = async (chatId)=>{
-    const response = await api.delete(`/api/chat/${chatId}`)
-    return response.data
-}
+export const deletechat = async (chatId) => {
+  const response = await api.delete(`/api/chat/${chatId}`);
+  return response.data;
+};
 
 export const uploadpdf = async ({ file, chatId }) => {
   const formData = new FormData();
@@ -54,7 +59,7 @@ export const uploadpdf = async ({ file, chatId }) => {
       "Content-Type": "multipart/form-data",
     },
   });
- console.log(response);
- 
+  console.log(response);
+
   return response.data;
 };
